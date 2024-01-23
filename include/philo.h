@@ -20,8 +20,36 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <limits.h>
+#include "../ft_printf/include/ft_printf.h"
+#include "../ft_printf/libft/libft.h"
 
-typedef pthread_mutex_t t_mutex;
+/*--- COLORS ---*/
+
+# define RED			"\033[38;2;255;0;0m"		//	red
+# define GREEN		"\033[38;2;0;255;0m"		//	green
+# define MAG			"\033[38;2;255;38;253m"	//	magenta
+# define CYA			"\033[36m"							//	cyan
+
+#define DEF				"\033[0m"								// reset default color
+
+# define GRAS			"\033[1m"								//	gras
+# define SOUL			"\033[4m"								//	souligne
+# define ITAL			"\033[3m"								//	italique
+
+# define X				"\xE2\x9C\x97"					//	✗
+# define V				"\xE2\x9C\x93"					//	✓
+# define WARNING	"\xE2\x9A\xA0"					//	⚠
+
+/*--- ERROR ---*/
+
+# define ERROR_IN	"./philo 5 800 200 200 [5]"
+
+//-------------
+
+typedef pthread_mutex_t	t_mutex;
+
+typedef struct s_table	t_table;
+
 
 /*----- FORK -----*/
 
@@ -50,7 +78,7 @@ typedef struct s_philo
 /*----- TABLE -----*/
 // ./philo 5 800 200 200 [5]
 
-typedef struct s_table
+struct s_table
 {
 	long philo_nbr;
 	long	time_to_die;
@@ -61,7 +89,15 @@ typedef struct s_table
 	bool	end_simulation; // a philo dies or all philo full
 	t_fork	*forks; // array forks
 	t_philo	*philos; // array philosophers
-}							t_table;
+	int		test;
+};
+
+/*----- PROTOTYPES -----*/
+//utils:
+void	ft_error(const char *error);
+//parsing:
+void	parse_intput(t_table table, char **argv);
+
 
 
 #endif
