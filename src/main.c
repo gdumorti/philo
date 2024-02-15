@@ -24,22 +24,17 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		//correct input
-		//1
-		parse_intput(&table, argv);
+		check_input(&table, argv);
 		//2
-		data_init(&table);
+		//data_init(&table);
 		//3 begin
-		dinner_start(&table);
+		//dinner_start(&table);
 		//4 leaks
-		clean(&table);
+		//clean(&table);
 		table.test = ft_atoi(argv[1]);
-		ft_printf("OK\n");
+		//ft_printf("OK\n");
 	}
 	else
-	{
-		//wrong input
-		ft_error(GRAS "Wrong input:\n" DEF GREEN"	Please use "ERROR_IN DEF);
-	}
+		ft_error(GRAS "Wrong input:\n" DEF GREEN"	Please use "ERROR_IN, NULL);
 	return (0);
 }

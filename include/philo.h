@@ -20,6 +20,7 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <limits.h>
+#include <errno.h>
 #include "../ft_printf/include/ft_printf.h"
 #include "../ft_printf/libft/libft.h"
 
@@ -29,6 +30,7 @@
 # define GREEN		"\033[38;2;0;255;0m"		//	green
 # define MAG			"\033[38;2;255;38;253m"	//	magenta
 # define CYA			"\033[36m"							//	cyan
+# define YEL			"\033[33m"							//	yellow
 
 #define DEF				"\033[0m"								// reset default color
 
@@ -39,6 +41,18 @@
 # define X				"\xE2\x9C\x97"					//	✗
 # define V				"\xE2\x9C\x93"					//	✓
 # define WARNING	"\xE2\x9A\xA0"					//	⚠
+# define ERROR		"\033[38;2;255;0;0m\xE2\x9C\x97" // red ✗
+/*--- OPCODE MUTEX ---*/
+typedef enum	e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}		t_opcode;
 
 /*--- ERROR ---*/
 
@@ -94,9 +108,19 @@ struct s_table
 
 /*----- PROTOTYPES -----*/
 //utils:
-void	ft_error(const char *error);
+void	ft_error(char *error, const char *str);
 //parsing:
-void	parse_intput(t_table table, char **argv);
+long	ft_atol(const char *str);
+void	check_input(t_table *table, char **argv);
+//init
+void	data_init(t_table *table);
+//secure
+void	*malloc_secure(size_t len);
+static void	handle_error_mutex(int status, t_opcode opcode);
+void	handle_secure_mutex(t_mutex *mutex, t_opcode opcode);
+static void	handle_error_thread(int status, t_opcode opcode);
+void	handle_secure_thread(pthread_t *thread, void *(foo)(void *), void *data, t_opcode opcode);
+
 
 
 

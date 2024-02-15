@@ -3,7 +3,7 @@
 CC = gcc
 NAME = philo
 CFLAGS = -Wall -Werror -Wextra
-SRCS = main.c utils.c
+SRCS = main.c utils.c check_input.c #init.c
 SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)
 
