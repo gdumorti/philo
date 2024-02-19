@@ -18,19 +18,13 @@ static void fork_init(t_philo *philo, t_fork *forks, int position)
 
 	philo_nbr = philo->table->philo_nbr;
 	//deadlock
-	philo->right_fork = &forks[position];
-	philo->left_fork = &forks[(position + 1) % philo_nbr];
-	
-
-
-
-
-
-
-
-
-
-
+	philo->first_fork = &forks[(position + 1) % philo_nbr];
+	philo->second_fork = &forks[position];
+	if (philo->id % 2 == 0)
+	{
+		philo->first_fork = &forks[position];
+		philo->second_fork = &forks[(position + 1) % philo_nbr];
+	}
 }
 
 static void	philo_init(t_table *table)
@@ -58,7 +52,10 @@ void	data_init(t_table *table)
 
 	i = 0;
 	table->end_simulation = false;
+	table->all_thread_rdy = false;
 	table->philos = malloc_secure(table->philo_nbr * sizeof(t_philo));
+	handle_secure_mutex(&table->table_mutex, INIT);
+	handle_secure_mutex(&table->write_mutex, INIT);
 	table->forks = malloc_secure(table->philo_nbr * sizeof(t_fork));
 	while (i++ < table->philo_nbr)
 	{
