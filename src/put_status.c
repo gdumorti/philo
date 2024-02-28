@@ -33,16 +33,18 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 {
 	long	passed;
 
-	passed == get_time(MILLISECONDS);
+	passed == get_time(MILLISECONDS) - philo->table->start_simulation;
+	if (get_bool(&philo->philo_mutex, &philo->full))
+		return ;
 	handle_secure_mutex(&philo->table->write_mutex, LOCK);
 
 	if (debug)
 		write_status_debug(status, philo, passed);
 	else
 	{
-		if ((TAKE_FIRST_FORK == status || TAKE_SECOND_FORK == status) && simulation_finished(philo->table))	//inverser egalite si ca marche
+		if ((TAKE_FIRST_FORK == status || TAKE_SECOND_FORK == status) && !simulation_finished(philo->table))	//inverser egalite si ca marche
 			printf(WHI"%-6ld"DEF"	%d has taken a fork\n", passed, philo->id);
-		else if (EATING == status && !(simulation_finished(philo->table)))
+		else if (EATING == status && !simulation_finished(philo->table))
 			printf(WHI"%-6ld"CYA"	%d is eating\n"DEF, passed, philo->id);
 		else if (SLEEPING == status && !simulation_finished(philo->table))
 			printf(WHI"%-6ld"DEF"	%d is sleeping\n", passed, philo->id);

@@ -2,8 +2,8 @@
 #
 CC = gcc
 NAME = philo
-CFLAGS = -Wall -Werror -Wextra
-SRCS = main.c utils.c check_input.c #init.c
+CFLAGS = -Wall -Wextra -g -fsanitize=address #-Werror
+SRCS = utils.c check_input.c init.c acces_mutex.c action.c put_status.c secure_utils.c synchro.c monitor.c free_utils.c main.c
 SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)
 
@@ -46,17 +46,17 @@ all : $(NAME)
 	$(CC) -c $< $(CFLAGS) -I./include -o $@
 
 $(NAME) : $(OBJ)
-	make -C ft_printf
-	$(CC) $(CFLAGS) $(SRC) -o $(NAME) printf.a
+	make -C libft
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) libft.a
 
 clean :
 	rm -rf $(OBJ)
-	make clean -C ft_printf
+	make clean -C libft
 
 
 fclean : clean
 	rm -rf $(NAME)
-	make fclean -C ft_printf
+	make fclean -C libft
 
 re : fclean all
 

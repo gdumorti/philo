@@ -21,17 +21,19 @@ input: ./philo 5 800 200 200 [5]
 int	main(int argc, char **argv)
 {
 	t_table	table;
-
+	
 	if (argc == 5 || argc == 6)
 	{
 		check_input(&table, argv);
 		//2
+		printf("OK3\n");
 		data_init(&table);
 		//3 begin
-		//dinner_start(&table);
+		printf("OK FIN\n");
+		meal_start(&table);
 		//4 leaks
-		//clean(&table);
-		table.test = ft_atoi(argv[1]);
+		clean_mem(&table);
+		//table.test = ft_atoi(argv[1]);
 		//ft_printf("OK\n");
 	}
 	else

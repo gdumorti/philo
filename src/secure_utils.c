@@ -61,7 +61,7 @@ static void	handle_error_thread(int status, t_opcode opcode)
 		ft_error(GRAS"No ressources to create another thread.", NULL);
 	else if (status == EPERM)
 		ft_error(GRAS"The caller does not have appropriate permission.", NULL);
-	else if (status == EINVAL && opcode == status)
+	else if (status == EINVAL && opcode == CREATE) //status
 		ft_error(GRAS"The value specified by attr is invalid.", NULL);
 	else if (status == EINVAL && (opcode == JOIN || opcode == DETACH))
 		ft_error(GRAS"The value specified by thread is not joinable.", NULL);
@@ -71,7 +71,7 @@ static void	handle_error_thread(int status, t_opcode opcode)
 		ft_error(GRAS"A deadlock was detected or the value of thread specifies the calling thread.", NULL);
 }
 
-void	handle_secure_thread(pthread_t *thread, void *(foo)(void *), void *data, t_opcode opcode)
+void	handle_secure_thread(pthread_t *thread, void *(*foo)(void *), void *data, t_opcode opcode)
 {
 	if (opcode == CREATE)
 		handle_error_thread(pthread_create(thread, NULL, foo, data), opcode);

@@ -17,11 +17,11 @@
 - time_code -> SECONDS MILISECONDS MICROSECONDS
 */
 
-long	get_time(t_time_code time_code)
+long	get_time(int time_code)
 {
 	struct	timeval	time_value;
 
-	if (gettimeofday(&time_value, NULL) != 0); 																				//retirer != 0 si ca marche pas
+	if (gettimeofday(&time_value, NULL) != 0)																				//retirer != 0 si ca marche pas
 		ft_error(GRAS"Error: gettimeofday failed", NULL);
 	if (SECONDS == time_code)																													//inverser egalite si ca marche
 		return (time_value.tv_sec + (time_value.tv_usec / 1000000));

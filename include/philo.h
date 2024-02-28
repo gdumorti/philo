@@ -21,8 +21,7 @@
 #include <sys/time.h>
 #include <limits.h>
 #include <errno.h>
-#include "../ft_printf/include/ft_printf.h"
-#include "../ft_printf/libft/libft.h"
+#include "../libft/libft.h"
 
 /*--- COLORS ---*/
 
@@ -47,6 +46,9 @@
 
 
 # define DEBUG_MODE 0
+# ifndef PHILO_MAX
+#  define PHILO_MAX 200
+# endif
 
 /*--- PHILO STATES ---*/
 typedef	enum e_status
@@ -105,15 +107,16 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int	id;
-	long meals_counter;
-	bool full;
-	long last_meal_time; // time passed from last meal
-	t_fork	*first_fork;
-	t_fork	*second_fork;
+	int			id;
+	long		meals_counter;
+	bool 		full;
+	long 		last_meal_time; // time passed from last meal
+	t_fork		*first_fork;
+	t_fork		*second_fork;
 	pthread_t	thread_id;
-	t_table	*table;
-}			t_philo;
+	t_mutex		philo_mutex;
+	t_table		*table;
+}				t_philo;
 
 /*----- TABLE -----*/
 // ./philo 5 800 200 200 [5]
@@ -128,17 +131,19 @@ struct s_table
 	long		start_simulation;
 	bool		end_simulation; // a philo dies or all philo full
 	bool		all_thread_rdy; // synchro philo
-	t_mutex	table_mutex;	//
-	t_mutex	*write_mutex;
-	t_fork	*forks; // array forks
-	t_philo	*philos; // array philosophers
+	long		threads_running_nbr;
+	pthread_t	monitor;
+	t_mutex		table_mutex;	//
+	t_mutex		*write_mutex;
+	t_fork		*forks; // array forks
+	t_philo		*philos; // array philosophers
 	int			test;
 };
 
 /*----- PROTOTYPES -----*/
 //utils:
-long	get_time(t_time_code time_code);
-void	precise_usleep(long usec, t_table *table)
+long	get_time(int time_code);
+void	precise_usleep(long usec, t_table *table);
 void	ft_error(char *error, const char *str);
 //parsing:
 long	ft_atol(const char *str);
@@ -155,13 +160,24 @@ void	handle_secure_thread(pthread_t *thread, void *(foo)(void *), void *data, t_
 void	set_bool(t_mutex *mutex, bool *dest, bool value);
 bool	get_bool(t_mutex *mutex, bool *value);
 long	get_long(t_mutex *mutex, long *value);
-void	set_long(t_mutex *mutex, long *dest, long *value);
+void	set_long(t_mutex *mutex, long *dest, long value);
 bool	simulation_finished(t_table *table);
 //synchro
 void	wait_philo_created(t_table *table);
+bool	all_threads_running(t_mutex *mutex, long *threads, long philo_nbr);
+void	increase_long(t_mutex *mutex, long *value);
+void	unsynchronize_philos(t_philo *philo);
 //put_status
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 static void	write_status_debug(t_philo_status status, t_philo *philo, long passed);
+//action
+void	meal_start(t_table *table);
+//monitor
+void    *monitor_meal(void *data);
+//free_utils
+void    clean_mem(t_table *table);
+//action
+void	thinking(t_philo *philo, bool pre_simulation);
 
 
 

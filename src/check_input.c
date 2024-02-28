@@ -52,7 +52,10 @@ long	ft_atol(const char *str)
 
 void	check_input(t_table *table, char **argv)
 {
+	printf("OK1\n");
 	table->philo_nbr = ft_atol(argv[1]);
+	if (table->philo_nbr > PHILO_MAX)
+		ft_error(GRAS"Too many philos", NULL);
 	table->time_to_die = ft_atol(argv[2]) * 1000;
 	table->time_to_eat = ft_atol(argv[3]) * 1000;
 	table->time_to_sleep = ft_atol(argv[4]) * 1000;
@@ -64,7 +67,7 @@ void	check_input(t_table *table, char **argv)
 	else
 		table->nbr_limit_meals = -1;
 
-	ft_putstr_fd("OK\n", 1);
+	ft_putstr_fd("OK2\n", 1);
 	//ft_printf(GRAS GREEN"OK\n");
 
 }
