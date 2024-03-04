@@ -2,7 +2,7 @@
 #
 CC = gcc
 NAME = philo
-CFLAGS = -Wall -Wextra -g -fsanitize=address #-Werror
+CFLAGS = -g -O3 -Wall -Wextra -fsanitize=address #
 SRCS = utils.c check_input.c init.c acces_mutex.c action.c put_status.c secure_utils.c synchro.c monitor.c free_utils.c main.c
 SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)

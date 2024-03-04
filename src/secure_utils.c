@@ -17,7 +17,9 @@ void	*malloc_secure(size_t len)
 	void	*mallocated;
 
 	if ((mallocated = malloc(len)) == NULL)
+	{
 		ft_error(GRAS"Error: malloc failed", NULL);
+	}
 	return (mallocated);
 }
 

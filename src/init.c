@@ -37,9 +37,9 @@ static void	philo_init(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philo = table->philos + i;
-		printf("OK6.0.1 --> %ld\n", table->philo_nbr);
-		
-		philo = malloc(table->philo_nbr * sizeof (t_philo)); //PAS NET TOUT CA
+		printf("OK6.0.1 --> %ld et %d\n", table->philo_nbr, i);
+
+		//philo = malloc(sizeof (t_philo)); //PAS NET TOUT CA
 		philo->id = i + 1; //GROS PROB ICI SEG FAULT!!! PROB D'ALLOC MEM
 		printf("OK6.0.2\n");
 		
@@ -55,7 +55,6 @@ static void	philo_init(t_table *table)
 
 		fork_init(philo, table->forks, i);
 		i++;
-
 	}
 	printf("OK6.3\n");
 }
@@ -68,10 +67,11 @@ void	data_init(t_table *table)
 	table->end_simulation = false;
 	table->all_thread_rdy = false;
 	table->threads_running_nbr = 0;
+	printf("philo_nbr = %ld\n", table->philo_nbr);
 	table->philos = malloc_secure(table->philo_nbr * sizeof(t_philo));
+	table->forks = malloc_secure(table->philo_nbr * sizeof(t_fork));
 	handle_secure_mutex(&table->table_mutex, INIT);
 	handle_secure_mutex(&table->write_mutex, INIT);
-	table->forks = malloc_secure(table->philo_nbr * sizeof(t_fork));
 	while (i < table->philo_nbr)
 	{
 		handle_secure_mutex(&table->forks[i].fork, INIT);
